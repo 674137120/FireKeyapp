@@ -1,0 +1,101 @@
+<view class="container">
+  <!-- 顶部标题 -->
+  <view class="header">
+    <view class="title">登录</view>
+    <view class="subtitle">欢迎使用森林无人机监控平台</view>
+  </view>
+  
+  <!-- 登录方式选择 -->
+  <view class="login-type-tabs">
+    <view class="tab {{loginType === 'wechat' ? 'active' : ''}}" bindtap="switchLoginType" data-type="wechat">微信登录</view>
+    <view class="tab {{loginType === 'phone' ? 'active' : ''}}" bindtap="switchLoginType" data-type="phone">手机验证码</view>
+    <view class="tab {{loginType === 'account' ? 'active' : ''}}" bindtap="switchLoginType" data-type="account">账号密码</view>
+  </view>
+  
+  <!-- 微信登录 -->
+  <view class="login-form" wx:if="{{loginType === 'wechat'}}">
+    <view class="wechat-login-btn" bindtap="wechatLogin" disabled="{{loginBtnDisabled}}">
+      <image src="/assets/icons/wechat.png" mode="aspectFit" class="wechat-icon"></image>
+      <text>微信一键登录</text>
+    </view>
+    <view class="tips">
+      <text>使用微信账号快速登录</text>
+    </view>
+  </view>
+  
+  <!-- 手机验证码登录 -->
+  <view class="login-form" wx:if="{{loginType === 'phone'}}">
+    <view class="form-item">
+      <view class="form-label">手机号</view>
+      <view class="form-input">
+        <input type="number" placeholder="请输入手机号" maxlength="11" bindinput="inputPhone" value="{{phone}}" />
+      </view>
+    </view>
+    
+    <view class="form-item">
+      <view class="form-label">验证码</view>
+      <view class="form-input verify-code">
+        <input type="number" placeholder="请输入验证码" maxlength="6" bindinput="inputVerifyCode" value="{{verifyCode}}" />
+        <view class="verify-code-btn {{countdown > 0 ? 'disabled' : ''}}" bindtap="sendVerifyCode">
+          {{countdown > 0 ? countdown + 's' : '获取验证码'}}
+        </view>
+      </view>
+    </view>
+    
+    <view class="login-btn" bindtap="phoneLogin" disabled="{{loginBtnDisabled}}">登录</view>
+  </view>
+  
+  <!-- 账号密码登录 -->
+  <view class="login-form" wx:if="{{loginType === 'account'}}">
+    <view class="form-item">
+      <view class="form-label">用户名</view>
+      <view class="form-input">
+        <input type="text" placeholder="请输入用户名" bindinput="inputUsername" value="{{username}}" />
+      </view>
+    </view>
+    
+    <view class="form-item">
+      <view class="form-label">密码</view>
+      <view class="form-input password">
+        <input type="{{showPassword ? 'text' : 'password'}}" placeholder="请输入密码" bindinput="inputPassword" value="{{password}}" />
+        <view class="password-toggle" bindtap="toggleShowPassword">
+          <image src="{{showPassword ? '/assets/icons/eye-open.png' : '/assets/icons/eye-close.png'}}" mode="aspectFit"></image>
+        </view>
+      </view>
+    </view>
+    
+    <view class="form-actions">
+      <view class="register-link" bindtap="navigateToRegister">注册账号</view>
+      <view class="forget-link" bindtap="navigateToForgetPassword">忘记密码</view>
+    </view>
+    
+    <view class="login-btn" bindtap="accountLogin" disabled="{{loginBtnDisabled}}">登录</view>
+  </view>
+  
+  <!-- 用户协议 -->
+  <view class="agreement">
+    <view class="checkbox {{isAgree ? 'checked' : ''}}" bindtap="toggleAgree">
+      <view class="checkbox-inner" wx:if="{{isAgree}}"></view>
+    </view>
+    <view class="agreement-text">
+      <text>我已阅读并同意</text>
+      <text class="link" bindtap="viewUserAgreement">《用户协议》</text>
+      <text>和</text>
+      <text class="link" bindtap="viewPrivacyPolicy">《隐私政策》</text>
+    </view>
+  </view>
+  
+  <!-- 底部其他登录方式提示 -->
+  <view class="other-login-tips" wx:if="{{loginType !== 'wechat'}}">
+    <view class="line"></view>
+    <view class="text">其他登录方式</view>
+    <view class="line"></view>
+  </view>
+  
+  <!-- 其他登录方式图标 -->
+  <view class="other-login-icons" wx:if="{{loginType !== 'wechat'}}">
+    <view class="icon-item" bindtap="switchLoginType" data-type="wechat">
+      <image src="/assets/icons/wechat.png" mode="aspectFit"></image>
+    </view>
+  </view>
+</view> 

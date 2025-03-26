@@ -1,0 +1,192 @@
+<!-- pages/patrol/patrol.wxml -->
+<view class="container">
+  <!-- 地图区域 -->
+  <view class="map-container">
+    <map id="patrolMap"
+      longitude="{{mapCenter.longitude}}"
+      latitude="{{mapCenter.latitude}}"
+      scale="{{mapScale}}"
+      markers="{{markers}}"
+      polyline="{{polylines}}"
+      polygons="{{polygons}}"
+      show-location
+      enable-3D="{{true}}"
+      enable-overlooking="{{true}}"
+      enable-rotate="{{true}}"
+      bindtap="onMapTap">
+    </map>
+    
+    <!-- 地图控制按钮 -->
+    <view class="map-controls">
+      <view class="control-btn" bindtap="enterDrawingMode" data-type="polygon">
+        <text class="icon">⬡</text>
+      </view>
+      <view class="control-btn" bindtap="exitDrawingMode">
+        <text class="icon">✕</text>
+      </view>
+    </view>
+    
+    <!-- 绘制工具栏 -->
+    <view class="drawing-toolbar" wx:if="{{isDrawingMode}}">
+      <view class="toolbar-title">绘制高危区域</view>
+      <view class="toolbar-btns">
+        <view class="toolbar-btn" bindtap="finishDrawing">
+          <text class="icon">✓</text>
+          <text>完成</text>
+        </view>
+        <view class="toolbar-btn" bindtap="cancelDrawing">
+          <text class="icon">✕</text>
+          <text>取消</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 轨迹控制面板 -->
+  <view class="track-panel">
+    <view class="panel-header">
+      <text class="title">巡护轨迹</text>
+      <view class="panel-actions">
+        <view class="action-btn {{isPlaying ? 'active' : ''}}" bindtap="{{isPlaying ? 'pausePlayback' : 'startPlayback'}}">
+          <text class="icon">{{isPlaying ? '⏸' : '▶'}}</text>
+        </view>
+        <view class="action-btn" bindtap="showDatePicker">
+          <text class="icon">≡</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 无人机选择器 -->
+    <scroll-view class="drone-selector" scroll-x="{{true}}">
+      <view 
+        wx:for="{{droneList}}" 
+        wx:key="id"
+        class="drone-item {{currentDrone.id === item.id ? 'active' : ''}}"
+        bindtap="switchDrone"
+        data-id="{{item.id}}">
+        <image src="/assets/icons/drone.png" mode="aspectFit"></image>
+        <view class="drone-info">
+          <text>{{item.name}}</text>
+          <text class="{{item.status === 'online' ? 'online' : 'offline'}}">{{item.status === 'online' ? '在线' : '离线'}}</text>
+        </view>
+      </view>
+    </scroll-view>
+    
+    <!-- 时间轴 -->
+    <view class="timeline-container">
+      <view class="timeline-info">
+        <text>{{currentTimeText}}</text>
+        <text>速度: {{playbackSpeed}}x</text>
+      </view>
+      <view class="timeline-labels">
+        <text>{{startTimeText}}</text>
+        <text>{{endTimeText}}</text>
+      </view>
+    </view>
+    
+    <!-- 速度控制 -->
+    <view class="speed-control">
+      <text>回放速度</text>
+      <view class="speed-btns">
+        <view class="speed-btn {{playbackSpeed === 1 ? 'active' : ''}}" bindtap="adjustSpeed" data-speed="1">1x</view>
+        <view class="speed-btn {{playbackSpeed === 2 ? 'active' : ''}}" bindtap="adjustSpeed" data-speed="2">2x</view>
+        <view class="speed-btn {{playbackSpeed === 4 ? 'active' : ''}}" bindtap="adjustSpeed" data-speed="4">4x</view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 日期选择器弹窗 -->
+  <view class="date-picker-modal" wx:if="{{showDatePicker}}">
+    <view class="modal-content">
+      <view class="modal-header">
+        <text>选择日期</text>
+        <text class="close-btn" bindtap="hideDatePicker">×</text>
+      </view>
+      <view class="date-picker">
+        <picker mode="date" value="{{selectedDate}}" start="{{dateRange.start}}" end="{{dateRange.end}}" bindchange="selectDate">
+          <view class="picker-value">
+            <text>{{selectedDate || '请选择日期'}}</text>
+            <text class="icon">▼</text>
+          </view>
+        </picker>
+      </view>
+      <view class="track-list">
+        <view wx:if="{{trackList.length === 0}}" class="empty-list">
+          <text>所选日期无巡护记录</text>
+        </view>
+        <view 
+          wx:for="{{trackList}}" 
+          wx:key="id"
+          class="track-item {{selectedTrackId === item.id ? 'active' : ''}}"
+          bindtap="switchTrack"
+          data-id="{{item.id}}">
+          <view class="track-item-info">
+            <text class="track-time">{{item.startTime}} - {{item.endTime}}</text>
+          </view>
+          <view class="track-item-stats">
+            <text>{{item.distance}} km</text>
+            <text>{{item.duration}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 区域标注弹窗 -->
+  <view class="area-modal" wx:if="{{showAreaModal}}">
+    <view class="modal-content">
+      <view class="modal-header">
+        <text>高危区域标注</text>
+        <text class="close-btn" bindtap="hideAreaModal">×</text>
+      </view>
+      <view class="area-form">
+        <view class="form-item">
+          <text class="label">区域名称</text>
+          <input type="text" placeholder="请输入区域名称" value="{{areaForm.name}}" data-field="name" bindinput="updateAreaForm" />
+        </view>
+        <view class="form-item">
+          <text class="label">风险类型</text>
+          <radio-group data-field="type" bindchange="updateAreaForm">
+            <label class="radio-item">
+              <radio value="fire" checked="{{areaForm.type === 'fire'}}" color="#2E5E4E" />
+              <text>火灾风险</text>
+            </label>
+            <label class="radio-item">
+              <radio value="landslide" checked="{{areaForm.type === 'landslide'}}" color="#2E5E4E" />
+              <text>泥石流风险</text>
+            </label>
+            <label class="radio-item">
+              <radio value="animal" checked="{{areaForm.type === 'animal'}}" color="#2E5E4E" />
+              <text>野生动物</text>
+            </label>
+          </radio-group>
+        </view>
+        <view class="form-item">
+          <text class="label">风险等级</text>
+          <radio-group data-field="level" bindchange="updateAreaForm">
+            <label class="radio-item">
+              <radio value="high" checked="{{areaForm.level === 'high'}}" color="#2E5E4E" />
+              <text>高</text>
+            </label>
+            <label class="radio-item">
+              <radio value="medium" checked="{{areaForm.level === 'medium'}}" color="#2E5E4E" />
+              <text>中</text>
+            </label>
+            <label class="radio-item">
+              <radio value="low" checked="{{areaForm.level === 'low'}}" color="#2E5E4E" />
+              <text>低</text>
+            </label>
+          </radio-group>
+        </view>
+        <view class="form-item">
+          <text class="label">备注</text>
+          <textarea placeholder="请输入备注信息" value="{{areaForm.remark}}" data-field="remark" bindinput="updateAreaForm"></textarea>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="cancel-btn" bindtap="hideAreaModal">取消</button>
+        <button class="confirm-btn" bindtap="saveArea">保存</button>
+      </view>
+    </view>
+  </view>
+</view> 

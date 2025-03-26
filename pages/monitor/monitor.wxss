@@ -1,0 +1,286 @@
+/* pages/monitor/monitor.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--background-color);
+}
+
+/* 顶部状态栏 */
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10rpx 20rpx;
+  background-color: var(--primary-color);
+  color: #ffffff;
+  font-size: 24rpx;
+  height: 60rpx;
+}
+
+.drone-status {
+  display: flex;
+  gap: 20rpx;
+}
+
+.drone-status.online {
+  color: #4CAF50;
+}
+
+.drone-status.offline {
+  color: #F44336;
+}
+
+.weather-info {
+  display: flex;
+  gap: 20rpx;
+}
+
+/* 地图区域 */
+.map-container {
+  position: relative;
+  height: 35vh;
+  width: 100%;
+}
+
+#droneMap {
+  width: 100%;
+  height: 100%;
+}
+
+.map-controls {
+  position: absolute;
+  right: 20rpx;
+  bottom: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.control-btn {
+  width: 70rpx;
+  height: 70rpx;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.2);
+}
+
+.control-btn .icon {
+  font-size: 36rpx;
+  color: var(--primary-color);
+}
+
+.control-btn.active {
+  background-color: var(--primary-color);
+}
+
+.control-btn.active .icon {
+  color: #ffffff;
+}
+
+/* 视频流区域 */
+.video-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 20rpx 20rpx 0 0;
+  margin-top: -20rpx;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 -4rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.video-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx;
+  border-bottom: 1rpx solid #eeeeee;
+}
+
+.video-header .title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.video-controls {
+  display: flex;
+  gap: 20rpx;
+}
+
+.video-player {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  background-color: #000000;
+}
+
+.video-player.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+}
+
+live-player {
+  width: 100%;
+  height: 100%;
+}
+
+.detection-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.detection-box {
+  position: absolute;
+  border: 4rpx solid;
+  box-sizing: border-box;
+}
+
+.detection-box.fire {
+  border-color: #F44336;
+}
+
+.detection-box.smoke {
+  border-color: #9E9E9E;
+}
+
+.detection-box.animal {
+  border-color: #4CAF50;
+}
+
+.detection-box.human {
+  border-color: #2196F3;
+}
+
+.detection-box.vehicle {
+  border-color: #FF9800;
+}
+
+.detection-label {
+  position: absolute;
+  top: -30rpx;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  padding: 4rpx 8rpx;
+  font-size: 20rpx;
+  border-radius: 4rpx;
+  white-space: nowrap;
+}
+
+.video-info {
+  position: absolute;
+  bottom: 20rpx;
+  left: 20rpx;
+  right: 20rpx;
+  display: flex;
+  justify-content: space-between;
+  color: #ffffff;
+  font-size: 24rpx;
+  text-shadow: 0 0 4rpx rgba(0, 0, 0, 0.8);
+}
+
+.video-selector {
+  height: 160rpx;
+  white-space: nowrap;
+  padding: 10rpx;
+  background-color: #f5f5f5;
+}
+
+.video-item {
+  display: inline-block;
+  width: 200rpx;
+  height: 140rpx;
+  margin-right: 10rpx;
+  border-radius: 8rpx;
+  overflow: hidden;
+  position: relative;
+  border: 2rpx solid transparent;
+}
+
+.video-item.active {
+  border-color: var(--primary-color);
+}
+
+.video-item image {
+  width: 100%;
+  height: 100%;
+}
+
+.video-item-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 4rpx 8rpx;
+  display: flex;
+  justify-content: space-between;
+  font-size: 20rpx;
+  color: #ffffff;
+}
+
+.video-item-info .online {
+  color: #4CAF50;
+}
+
+.video-item-info .offline {
+  color: #F44336;
+}
+
+/* 底部控制栏 */
+.control-panel {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 100rpx;
+  background-color: #ffffff;
+  border-top: 1rpx solid #eeeeee;
+}
+
+.panel-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.panel-item .icon {
+  font-size: 40rpx;
+  margin-bottom: 4rpx;
+}
+
+.panel-item text {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.panel-item .badge {
+  position: absolute;
+  top: -6rpx;
+  right: -10rpx;
+  background-color: var(--danger-color);
+  color: #ffffff;
+  font-size: 20rpx;
+  min-width: 32rpx;
+  height: 32rpx;
+  border-radius: 16rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 6rpx;
+} 

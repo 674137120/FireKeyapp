@@ -1,0 +1,107 @@
+/**app.wxss**/
+page {
+  --primary-color: #2E5E4E;
+  --secondary-color: #4A7C6F;
+  --light-color: #A3C9A8;
+  --warning-color: #FF6B35;
+  --danger-color: #D62828;
+  --background-color: #F5F5F5;
+  --text-color: #333333;
+  --text-secondary: #666666;
+  
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
+    Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei',
+    sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 8rpx 24rpx;
+}
+
+.btn-warning {
+  background-color: var(--warning-color);
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 8rpx 24rpx;
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 8rpx 24rpx;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 8rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
+  margin-bottom: 20rpx;
+  padding: 20rpx;
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.text-warning {
+  color: var(--warning-color);
+}
+
+.text-danger {
+  color: var(--danger-color);
+}
+
+.badge {
+  display: inline-block;
+  padding: 4rpx 12rpx;
+  border-radius: 16rpx;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.badge-warning {
+  background-color: var(--warning-color);
+  color: #ffffff;
+}
+
+.badge-danger {
+  background-color: var(--danger-color);
+  color: #ffffff;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+} 

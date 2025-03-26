@@ -1,0 +1,82 @@
+<!-- pages/mine/mine.wxml -->
+<view class="container">
+  <!-- 用户信息 -->
+  <view class="user-info">
+    <view class="avatar-container">
+      <image class="avatar" src="{{userInfo.avatar || '/assets/icons/default-avatar.png'}}" mode="aspectFill"></image>
+      <view class="edit-avatar" bindtap="chooseAvatar">
+        <text class="icon">📷</text>
+      </view>
+    </view>
+    <view class="user-details">
+      <text class="username">{{userInfo.name || '未登录'}}</text>
+      <text class="role">{{userInfo.role || '游客'}}</text>
+    </view>
+    <view class="login-btn" wx:if="{{!isLogin}}" bindtap="login">
+      <text>登录</text>
+    </view>
+  </view>
+  
+  <!-- 功能菜单 -->
+  <view class="menu-list">
+    <view class="menu-group">
+      <view class="menu-item" bindtap="navigateTo" data-url="/pages/mine/profile/profile">
+        <view class="menu-icon">👤</view>
+        <text class="menu-text">个人资料</text>
+        <text class="menu-arrow">></text>
+      </view>
+      <view class="menu-item" bindtap="navigateTo" data-url="/pages/mine/notification/notification">
+        <view class="menu-icon">🔔</view>
+        <text class="menu-text">消息通知</text>
+        <text class="menu-badge" wx:if="{{unreadCount > 0}}">{{unreadCount}}</text>
+        <text class="menu-arrow">></text>
+      </view>
+    </view>
+    
+    <view class="menu-group">
+      <view class="menu-item" bindtap="navigateTo" data-url="/pages/mine/task/task">
+        <view class="menu-icon">📋</view>
+        <text class="menu-text">任务管理</text>
+        <text class="menu-arrow">></text>
+      </view>
+      <view class="menu-item" bindtap="navigateTo" data-url="/pages/mine/report/report">
+        <view class="menu-icon">📊</view>
+        <text class="menu-text">巡护报告</text>
+        <text class="menu-arrow">></text>
+      </view>
+      <view class="menu-item" bindtap="navigateTo" data-url="/pages/mine/area/area">
+        <view class="menu-icon">🗺️</view>
+        <text class="menu-text">区域管理</text>
+        <text class="menu-arrow">></text>
+      </view>
+    </view>
+    
+    <view class="menu-group">
+      <view class="menu-item" bindtap="navigateTo" data-url="/pages/mine/settings/settings">
+        <view class="menu-icon">⚙️</view>
+        <text class="menu-text">系统设置</text>
+        <text class="menu-arrow">></text>
+      </view>
+      <view class="menu-item" bindtap="navigateTo" data-url="/pages/mine/help/help">
+        <view class="menu-icon">❓</view>
+        <text class="menu-text">帮助中心</text>
+        <text class="menu-arrow">></text>
+      </view>
+      <view class="menu-item" bindtap="navigateTo" data-url="/pages/mine/about/about">
+        <view class="menu-icon">ℹ️</view>
+        <text class="menu-text">关于我们</text>
+        <text class="menu-arrow">></text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 退出登录按钮 -->
+  <view class="logout-btn" wx:if="{{isLogin}}" bindtap="logout">
+    <text>退出登录</text>
+  </view>
+  
+  <!-- 版本信息 -->
+  <view class="version-info">
+    <text>版本 {{version}}</text>
+  </view>
+</view> 

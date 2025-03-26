@@ -1,0 +1,483 @@
+/* pages/patrol/patrol.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--background-color);
+}
+
+/* 地图区域 */
+.map-container {
+  position: relative;
+  height: 60vh;
+  width: 100%;
+}
+
+#patrolMap {
+  width: 100%;
+  height: 100%;
+}
+
+.map-controls {
+  position: absolute;
+  right: 20rpx;
+  bottom: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.control-btn {
+  width: 70rpx;
+  height: 70rpx;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.2);
+}
+
+.control-btn .icon {
+  font-size: 36rpx;
+  color: var(--primary-color);
+}
+
+.control-btn.active {
+  background-color: var(--primary-color);
+}
+
+.control-btn.active .icon {
+  color: #ffffff;
+}
+
+/* 绘制工具栏 */
+.drawing-toolbar {
+  position: absolute;
+  top: 20rpx;
+  left: 20rpx;
+  right: 20rpx;
+  background-color: #ffffff;
+  border-radius: 8rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.2);
+  padding: 20rpx;
+}
+
+.toolbar-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 10rpx;
+}
+
+.toolbar-btns {
+  display: flex;
+  justify-content: space-between;
+}
+
+.toolbar-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10rpx;
+  border-radius: 4rpx;
+}
+
+.toolbar-btn .icon {
+  font-size: 40rpx;
+  margin-bottom: 4rpx;
+  color: var(--text-secondary);
+}
+
+.toolbar-btn text {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.toolbar-btn.active {
+  background-color: rgba(46, 94, 78, 0.1);
+}
+
+.toolbar-btn.active .icon,
+.toolbar-btn.active text {
+  color: var(--primary-color);
+}
+
+/* 轨迹控制面板 */
+.track-panel {
+  flex: 1;
+  background-color: #ffffff;
+  border-radius: 20rpx 20rpx 0 0;
+  margin-top: -20rpx;
+  padding: 20rpx;
+  z-index: 1;
+  box-shadow: 0 -4rpx 10rpx rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.panel-header .title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.panel-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.action-btn {
+  width: 60rpx;
+  height: 60rpx;
+  background-color: #f5f5f5;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.action-btn .icon {
+  font-size: 32rpx;
+  color: var(--text-secondary);
+}
+
+.action-btn.active {
+  background-color: var(--primary-color);
+}
+
+.action-btn.active .icon {
+  color: #ffffff;
+}
+
+/* 无人机选择器 */
+.drone-selector {
+  white-space: nowrap;
+  margin-bottom: 20rpx;
+  height: 120rpx;
+}
+
+.drone-item {
+  display: inline-block;
+  width: 180rpx;
+  height: 100rpx;
+  margin-right: 20rpx;
+  border-radius: 8rpx;
+  overflow: hidden;
+  position: relative;
+  border: 2rpx solid transparent;
+  background-color: #f5f5f5;
+}
+
+.drone-item.active {
+  border-color: var(--primary-color);
+}
+
+.drone-item image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 10rpx;
+}
+
+.drone-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 4rpx 8rpx;
+  display: flex;
+  justify-content: space-between;
+  font-size: 20rpx;
+  color: #ffffff;
+}
+
+.drone-info .online {
+  color: #4CAF50;
+}
+
+.drone-info .offline {
+  color: #F44336;
+}
+
+/* 时间轴 */
+.timeline-container {
+  margin-bottom: 20rpx;
+}
+
+.timeline-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-bottom: 10rpx;
+}
+
+.timeline-slider {
+  margin: 0;
+  padding: 0;
+}
+
+.timeline-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-top: 10rpx;
+}
+
+/* 轨迹信息 */
+.track-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+  padding: 20rpx 0;
+  border-top: 1rpx solid #f5f5f5;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info-item .label {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-bottom: 4rpx;
+}
+
+.info-item .value {
+  font-size: 28rpx;
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+/* 速度控制 */
+.speed-control {
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f5f5f5;
+}
+
+.speed-control text {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  margin-bottom: 10rpx;
+  display: block;
+}
+
+.speed-btns {
+  display: flex;
+  gap: 20rpx;
+}
+
+.speed-btn {
+  flex: 1;
+  height: 60rpx;
+  background-color: #f5f5f5;
+  border-radius: 30rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.speed-btn.active {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}
+
+/* 日期选择器弹窗 */
+.date-picker-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  width: 80%;
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  padding: 30rpx;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.modal-header text {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.close-btn {
+  font-size: 40rpx;
+  color: var(--text-secondary);
+  padding: 10rpx;
+}
+
+.date-picker {
+  margin-bottom: 30rpx;
+}
+
+.picker-value {
+  height: 80rpx;
+  background-color: #f5f5f5;
+  border-radius: 8rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+}
+
+.track-list {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.empty-list {
+  text-align: center;
+  padding: 40rpx;
+  color: var(--text-secondary);
+  font-size: 28rpx;
+}
+
+.track-item {
+  padding: 20rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.track-item.active {
+  background-color: rgba(46, 94, 78, 0.1);
+}
+
+.track-item-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10rpx;
+}
+
+.track-time {
+  font-size: 28rpx;
+  color: var(--text-primary);
+}
+
+.track-drone {
+  font-size: 24rpx;
+  color: var(--primary-color);
+}
+
+.track-item-stats {
+  display: flex;
+  gap: 20rpx;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20rpx;
+}
+
+.cancel-btn,
+.confirm-btn {
+  width: 160rpx;
+  height: 70rpx;
+  border-radius: 35rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28rpx;
+}
+
+.cancel-btn {
+  background-color: #f5f5f5;
+  color: var(--text-secondary);
+}
+
+.confirm-btn {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}
+
+/* 区域标注弹窗 */
+.area-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.area-form {
+  margin-bottom: 30rpx;
+}
+
+.form-item {
+  margin-bottom: 20rpx;
+}
+
+.form-item .label {
+  font-size: 28rpx;
+  color: var(--text-primary);
+  margin-bottom: 10rpx;
+  display: block;
+}
+
+.form-item input,
+.form-item textarea {
+  width: 100%;
+  background-color: #f5f5f5;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  color: var(--text-primary);
+}
+
+.form-item textarea {
+  height: 160rpx;
+}
+
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  color: var(--text-primary);
+} 

@@ -1,0 +1,265 @@
+/* pages/login/login.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #ffffff;
+  padding: 40rpx;
+}
+
+/* 顶部标题 */
+.header {
+  margin-bottom: 60rpx;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 20rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+}
+
+/* 登录方式选择 */
+.login-type-tabs {
+  display: flex;
+  margin-bottom: 60rpx;
+  border-bottom: 1rpx solid #eeeeee;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  position: relative;
+}
+
+.tab.active {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rpx;
+  height: 4rpx;
+  background-color: var(--primary-color);
+  border-radius: 2rpx;
+}
+
+/* 登录表单 */
+.login-form {
+  width: 100%;
+}
+
+.form-item {
+  margin-bottom: 40rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: var(--text-color);
+  margin-bottom: 20rpx;
+}
+
+.form-input {
+  height: 90rpx;
+  background-color: #f5f5f5;
+  border-radius: 45rpx;
+  padding: 0 30rpx;
+  display: flex;
+  align-items: center;
+}
+
+.form-input input {
+  flex: 1;
+  height: 100%;
+  font-size: 28rpx;
+}
+
+/* 验证码输入框 */
+.verify-code {
+  position: relative;
+}
+
+.verify-code-btn {
+  position: absolute;
+  right: 20rpx;
+  height: 60rpx;
+  padding: 0 30rpx;
+  background-color: var(--primary-color);
+  color: #ffffff;
+  font-size: 24rpx;
+  border-radius: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.verify-code-btn.disabled {
+  background-color: #cccccc;
+}
+
+/* 密码输入框 */
+.password {
+  position: relative;
+}
+
+.password-toggle {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-toggle image {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+/* 表单操作 */
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40rpx;
+}
+
+.register-link, .forget-link {
+  font-size: 24rpx;
+  color: var(--primary-color);
+}
+
+/* 登录按钮 */
+.login-btn {
+  height: 90rpx;
+  background-color: var(--primary-color);
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: bold;
+  border-radius: 45rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40rpx;
+}
+
+.login-btn[disabled] {
+  background-color: #cccccc;
+}
+
+/* 微信登录按钮 */
+.wechat-login-btn {
+  height: 90rpx;
+  background-color: #07c160;
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: bold;
+  border-radius: 45rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20rpx;
+}
+
+.wechat-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 10rpx;
+}
+
+.tips {
+  text-align: center;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-bottom: 40rpx;
+}
+
+/* 用户协议 */
+.agreement {
+  display: flex;
+  align-items: center;
+  margin-bottom: 60rpx;
+}
+
+.checkbox {
+  width: 36rpx;
+  height: 36rpx;
+  border: 2rpx solid #cccccc;
+  border-radius: 6rpx;
+  margin-right: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkbox.checked {
+  border-color: var(--primary-color);
+  background-color: var(--primary-color);
+}
+
+.checkbox-inner {
+  width: 20rpx;
+  height: 20rpx;
+  background-color: #ffffff;
+  border-radius: 4rpx;
+}
+
+.agreement-text {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.agreement-text .link {
+  color: var(--primary-color);
+}
+
+/* 其他登录方式 */
+.other-login-tips {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.line {
+  flex: 1;
+  height: 1rpx;
+  background-color: #eeeeee;
+}
+
+.text {
+  padding: 0 20rpx;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.other-login-icons {
+  display: flex;
+  justify-content: center;
+}
+
+.icon-item {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 20rpx;
+}
+
+.icon-item image {
+  width: 50rpx;
+  height: 50rpx;
+} 

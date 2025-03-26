@@ -1,0 +1,199 @@
+<!-- pages/warning/warning.wxml -->
+<view class="container">
+  <!-- 顶部标签页 -->
+  <view class="tabs">
+    <view class="tab {{activeTab === 'all' ? 'active' : ''}}" bindtap="switchTab" data-tab="all">
+      <text>全部</text>
+      <view class="badge" wx:if="{{statistics.all > 0}}">{{statistics.all}}</view>
+    </view>
+    <view class="tab {{activeTab === 'fire' ? 'active' : ''}}" bindtap="switchTab" data-tab="fire">
+      <text>火情</text>
+      <view class="badge" wx:if="{{statistics.fire > 0}}">{{statistics.fire}}</view>
+    </view>
+    <view class="tab {{activeTab === 'landslide' ? 'active' : ''}}" bindtap="switchTab" data-tab="landslide">
+      <text>泥石流</text>
+      <view class="badge" wx:if="{{statistics.landslide > 0}}">{{statistics.landslide}}</view>
+    </view>
+    <view class="tab {{activeTab === 'animal' ? 'active' : ''}}" bindtap="switchTab" data-tab="animal">
+      <text>动物异常</text>
+      <view class="badge" wx:if="{{statistics.animal > 0}}">{{statistics.animal}}</view>
+    </view>
+  </view>
+  
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <view class="filter-item" bindtap="toggleTimeFilter">
+      <text>时间: {{timeFilter}}</text>
+      <text class="arrow">▼</text>
+    </view>
+    <view class="filter-item" bindtap="toggleLevelFilter">
+      <text>级别: {{levelFilter}}</text>
+      <text class="arrow">▼</text>
+    </view>
+    <view class="filter-item" bindtap="toggleStatusFilter">
+      <text>状态: {{statusFilter}}</text>
+      <text class="arrow">▼</text>
+    </view>
+    <view class="search-box">
+      <input type="text" placeholder="搜索预警信息" bindinput="onSearchInput" value="{{searchKeyword}}" />
+      <text class="search-icon">🔍</text>
+    </view>
+  </view>
+  
+  <!-- 时间筛选下拉菜单 -->
+  <view class="dropdown-menu" wx:if="{{showTimeFilter}}">
+    <view class="dropdown-item {{timeFilter === '全部' ? 'active' : ''}}" bindtap="selectTimeFilter" data-value="全部">全部</view>
+    <view class="dropdown-item {{timeFilter === '今天' ? 'active' : ''}}" bindtap="selectTimeFilter" data-value="今天">今天</view>
+    <view class="dropdown-item {{timeFilter === '昨天' ? 'active' : ''}}" bindtap="selectTimeFilter" data-value="昨天">昨天</view>
+    <view class="dropdown-item {{timeFilter === '近7天' ? 'active' : ''}}" bindtap="selectTimeFilter" data-value="近7天">近7天</view>
+    <view class="dropdown-item {{timeFilter === '近30天' ? 'active' : ''}}" bindtap="selectTimeFilter" data-value="近30天">近30天</view>
+  </view>
+  
+  <!-- 级别筛选下拉菜单 -->
+  <view class="dropdown-menu" wx:if="{{showLevelFilter}}">
+    <view class="dropdown-item {{levelFilter === '全部' ? 'active' : ''}}" bindtap="selectLevelFilter" data-value="全部">全部</view>
+    <view class="dropdown-item {{levelFilter === '高' ? 'active' : ''}}" bindtap="selectLevelFilter" data-value="高">高</view>
+    <view class="dropdown-item {{levelFilter === '中' ? 'active' : ''}}" bindtap="selectLevelFilter" data-value="中">中</view>
+    <view class="dropdown-item {{levelFilter === '低' ? 'active' : ''}}" bindtap="selectLevelFilter" data-value="低">低</view>
+  </view>
+  
+  <!-- 状态筛选下拉菜单 -->
+  <view class="dropdown-menu" wx:if="{{showStatusFilter}}">
+    <view class="dropdown-item {{statusFilter === '全部' ? 'active' : ''}}" bindtap="selectStatusFilter" data-value="全部">全部</view>
+    <view class="dropdown-item {{statusFilter === '未处理' ? 'active' : ''}}" bindtap="selectStatusFilter" data-value="未处理">未处理</view>
+    <view class="dropdown-item {{statusFilter === '处理中' ? 'active' : ''}}" bindtap="selectStatusFilter" data-value="处理中">处理中</view>
+    <view class="dropdown-item {{statusFilter === '已处理' ? 'active' : ''}}" bindtap="selectStatusFilter" data-value="已处理">已处理</view>
+  </view>
+  
+  <!-- 预警列表 -->
+  <scroll-view class="warning-list" scroll-y="{{true}}" bindscrolltolower="loadMore">
+    <view wx:if="{{filteredWarnings.length === 0}}" class="empty-list">
+      <image src="/assets/icons/empty.png" mode="aspectFit"></image>
+      <text>暂无预警信息</text>
+    </view>
+    
+    <view wx:for="{{filteredWarnings}}" wx:key="id" class="warning-item" bindtap="navigateToDetail" data-id="{{item.id}}">
+      <view class="warning-header">
+        <view class="warning-type {{item.type}}">{{item.typeText}}</view>
+        <view class="warning-level {{item.level}}">{{item.levelText}}</view>
+        <view class="warning-status {{item.status}}">{{item.statusText}}</view>
+      </view>
+      
+      <view class="warning-content">
+        <view class="warning-title">{{item.title}}</view>
+        <view class="warning-desc">{{item.description}}</view>
+        <view class="warning-location">
+          <text class="icon">📍</text>
+          <text>{{item.location}}</text>
+        </view>
+      </view>
+      
+      <view class="warning-footer">
+        <view class="warning-time">
+          <text class="icon">🕒</text>
+          <text>{{item.time}}</text>
+        </view>
+        <view class="warning-drone">
+          <text class="icon">🚁</text>
+          <text>{{item.droneName}}</text>
+        </view>
+      </view>
+      
+      <view class="warning-actions">
+        <view class="action-btn view" catchtap="viewWarningOnMap" data-id="{{item.id}}">
+          <text class="icon">🗺️</text>
+          <text>查看地图</text>
+        </view>
+        <view class="action-btn share" catchtap="shareWarning" data-id="{{item.id}}">
+          <text class="icon">📤</text>
+          <text>分享</text>
+        </view>
+        <view class="action-btn {{item.status === 'pending' ? 'process' : 'processed'}}" catchtap="toggleWarningStatus" data-id="{{item.id}}" data-status="{{item.status}}">
+          <text class="icon">{{item.status === 'pending' ? '✅' : '↩️'}}</text>
+          <text>{{item.status === 'pending' ? '标记处理' : '重置状态'}}</text>
+        </view>
+      </view>
+    </view>
+    
+    <view wx:if="{{isLoading}}" class="loading">
+      <view class="loading-spinner"></view>
+      <text>加载中...</text>
+    </view>
+    
+    <view wx:if="{{!isLoading && !hasMore && filteredWarnings.length > 0}}" class="no-more">
+      <text>没有更多数据了</text>
+    </view>
+  </scroll-view>
+  
+  <!-- 悬浮按钮 -->
+  <view class="float-btns">
+    <view class="float-btn model-btn" bindtap="toggleModelInfo">
+      <text class="icon">🤖</text>
+      <text>AI模型</text>
+    </view>
+    
+    <view class="float-btn" bindtap="navigateToHeatmap">
+      <text class="icon">🔥</text>
+      <text>热力图</text>
+    </view>
+  </view>
+</view>
+
+<!-- 模型信息面板 -->
+<view class="model-panel {{showModelInfo ? 'show' : ''}}">
+  <view class="model-header">
+    <text>AI 检测模型信息</text>
+    <view class="close-btn" bindtap="toggleModelInfo">×</view>
+  </view>
+  
+  <view class="model-content">
+    <view class="model-info-item">
+      <text class="label">模型名称</text>
+      <text class="value">{{modelInfo.name}}</text>
+    </view>
+    
+    <view class="model-info-item">
+      <text class="label">版本</text>
+      <text class="value">{{modelInfo.version}}</text>
+    </view>
+    
+    <view class="model-info-item">
+      <text class="label">最后更新</text>
+      <text class="value">{{modelInfo.lastUpdated}}</text>
+    </view>
+    
+    <view class="model-info-item">
+      <text class="label">置信度阈值</text>
+      <view class="confidence-slider">
+        <slider 
+          min="50" 
+          max="95" 
+          step="5" 
+          value="{{modelInfo.confidence * 100}}" 
+          activeColor="var(--primary-color)"
+          backgroundColor="#e9e9e9"
+          blockSize="24"
+          bindchange="updateConfidence"
+        />
+        <text class="confidence-value">{{modelInfo.confidence * 100}}%</text>
+      </view>
+    </view>
+    
+    <view class="detection-classes">
+      <text class="section-title">检测类别</text>
+      <view class="classes-list">
+        <view class="class-item" wx:for="{{detectionClasses}}" wx:key="id">
+          <view class="class-color" style="background-color: {{item.color}}"></view>
+          <text class="class-name">{{item.name}}</text>
+          <text class="class-count">{{item.count}}</text>
+        </view>
+      </view>
+    </view>
+    
+    <view class="model-tips">
+      <text class="section-title">提示</text>
+      <text class="tip-text">提高置信度阈值可减少误报，但可能会漏检部分目标。</text>
+      <text class="tip-text">建议在70%-85%之间设置以获得最佳效果。</text>
+    </view>
+  </view>
+</view> 

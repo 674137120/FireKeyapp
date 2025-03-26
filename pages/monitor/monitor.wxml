@@ -1,0 +1,140 @@
+<!-- pages/monitor/monitor.wxml -->
+<view class="container">
+  <!-- 顶部状态栏 -->
+  <view class="status-bar">
+    <view class="drone-status {{droneStatus.online ? 'online' : 'offline'}}">
+      <text>无人机状态: {{droneStatus.online ? '在线' : '离线'}}</text>
+      <text wx:if="{{droneStatus.online}}">电量: {{droneStatus.battery}}%</text>
+    </view>
+    <view class="weather-info">
+      <text>{{weather.temperature}}°C</text>
+      <text>{{weather.windSpeed}}m/s</text>
+    </view>
+  </view>
+  
+  <!-- 地图区域 -->
+  <view class="map-container">
+    <map id="droneMap"
+      longitude="{{mapCenter.longitude}}"
+      latitude="{{mapCenter.latitude}}"
+      scale="{{mapScale}}"
+      markers="{{markers}}"
+      polyline="{{polylines}}"
+      show-location
+      enable-3D="{{true}}"
+      enable-overlooking="{{true}}"
+      enable-rotate="{{true}}"
+      bindregionchange="onMapRegionChange"
+      bindtap="onMapTap">
+    </map>
+    
+    <!-- 地图控制按钮 -->
+    <view class="map-controls">
+      <view class="control-btn" bindtap="zoomIn">
+        <text class="icon">+</text>
+      </view>
+      <view class="control-btn" bindtap="zoomOut">
+        <text class="icon">-</text>
+      </view>
+      <view class="control-btn" bindtap="resetMapView">
+        <text class="icon">⟳</text>
+      </view>
+      <view class="control-btn" bindtap="toggleMapType">
+        <text class="icon">🗺️</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 视频流区域 -->
+  <view class="video-container">
+    <view class="video-header">
+      <text class="title">实时监控</text>
+      <view class="video-controls">
+        <view class="control-btn {{isFullscreen ? 'active' : ''}}" bindtap="toggleFullscreen">
+          <text class="icon">⛶</text>
+        </view>
+        <view class="control-btn {{isRecording ? 'active' : ''}}" bindtap="toggleRecording">
+          <text class="icon">⏺</text>
+        </view>
+        <view class="control-btn {{isAiEnabled ? 'active' : ''}}" bindtap="toggleAiDetection">
+          <text class="icon">AI</text>
+        </view>
+      </view>
+    </view>
+    
+    <view class="video-player {{isFullscreen ? 'fullscreen' : ''}}">
+      <live-player 
+        id="videoPlayer"
+        src="{{currentVideoUrl}}"
+        mode="RTC"
+        autoplay="{{true}}"
+        muted="{{isMuted}}"
+        object-fit="{{objectFit}}"
+        min-cache="1"
+        max-cache="3"
+        bindstatechange="onPlayerStateChange"
+        binderror="onPlayerError">
+        
+        <!-- AI检测结果叠加层 -->
+        <cover-view class="detection-overlay" wx:if="{{isAiEnabled && detections.length > 0}}">
+          <block wx:for="{{detections}}" wx:key="id">
+            <cover-view class="detection-box {{item.class}}" style="left: {{item.x}}%; top: {{item.y}}%; width: {{item.width}}%; height: {{item.height}}%;">
+              <cover-view class="detection-label">
+                {{item.class}} {{item.confidence}}%
+              </cover-view>
+            </cover-view>
+          </block>
+        </cover-view>
+        
+        <!-- 视频信息叠加层 -->
+        <cover-view class="video-info">
+          <cover-view class="info-item">
+            <cover-view>无人机ID: {{currentDrone.id}}</cover-view>
+            <cover-view>高度: {{currentDrone.altitude}}m</cover-view>
+            <cover-view>速度: {{currentDrone.speed}}km/h</cover-view>
+          </cover-view>
+          <cover-view class="info-item time">
+            {{currentTime}}
+          </cover-view>
+        </cover-view>
+      </live-player>
+    </view>
+    
+    <!-- 多画面选择器 -->
+    <scroll-view class="video-selector" scroll-x="{{true}}">
+      <view 
+        wx:for="{{droneList}}" 
+        wx:key="id"
+        class="video-item {{currentDrone.id === item.id ? 'active' : ''}}"
+        bindtap="switchDrone"
+        data-id="{{item.id}}">
+        <image src="{{item.thumbnail}}" mode="aspectFill"></image>
+        <view class="video-item-info">
+          <text>{{item.name}}</text>
+          <text class="{{item.online ? 'online' : 'offline'}}">{{item.online ? '在线' : '离线'}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+  
+  <!-- 底部控制栏 -->
+  <view class="control-panel">
+    <view class="panel-item" bindtap="showDroneDetails">
+      <text class="icon">📊</text>
+      <text>详情</text>
+    </view>
+    <view class="panel-item" bindtap="takeScreenshot">
+      <text class="icon">📷</text>
+      <text>截图</text>
+    </view>
+    <view class="panel-item" bindtap="showWarnings">
+      <text class="icon">⚠️</text>
+      <text>预警</text>
+      <view class="badge" wx:if="{{unreadWarnings > 0}}">{{unreadWarnings}}</view>
+    </view>
+    <view class="panel-item" bindtap="showSettings">
+      <text class="icon">⚙️</text>
+      <text>设置</text>
+    </view>
+  </view>
+</view> 
