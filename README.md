@@ -5,8 +5,8 @@
 <div align="center">
   <img src="image\README\QQ_1743122833216.png" alt="系统架构" width="125" height="300">
   <img src="image\README\QQ_1743122809264.png" alt="系统架构" width="125" height="300">
-  <img src="image\README\QQ_1743122809264.png" alt="系统架构" width="125" height="300">
-  <img src="image\README\QQ_1743122809264.png" alt="系统架构" width="125" height="300">
+  <img src="image\README\QQ_1743122783253.png" alt="系统架构" width="125" height="300">
+  <img src="image\README\QQ_1743122713981.png" alt="系统架构" width="125" height="300">
   <br>
   <em>图1. 系统界面图</em>
 </div>
