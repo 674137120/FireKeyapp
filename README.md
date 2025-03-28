@@ -2,6 +2,15 @@
 
 基于微信小程序开发的森林防护无人机管理平台，实现无人机实时监控、灾害预警和巡护轨迹管理等功能。
 
+<div align="center">
+  <img src="image\README\QQ_1743122833216.png" alt="系统架构" width="125" height="300">
+  <img src="image\README\QQ_1743122809264.png" alt="系统架构" width="125" height="300">
+  <img src="image\README\QQ_1743122809264.png" alt="系统架构" width="125" height="300">
+  <img src="image\README\QQ_1743122809264.png" alt="系统架构" width="125" height="300">
+  <br>
+  <em>图1. 系统界面图</em>
+</div>
+
 ## 功能特点
 
 ### 实时监控页
